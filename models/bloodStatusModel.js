@@ -6,21 +6,25 @@ var AppError = require('../utils/appError');
 var bloodStatus = new Schema({
     status: {
         type: String,
-        require: true,
+        require: [true, "Please provide a status."],
+        enum: ["stored", "donated", "discarted"]
     },
-    date: {
-        type: Date,
-        require: true,
+    remark: {
+        type: String,
+    },
+    event:{
+        type: ObjectId,
+        ref: "Event",
+        required: [true, "Please provide an event"]
     },
     blood_bank: {
         type: ObjectId,
         ref: "User",
-        required: true
+        required: [true, "Please provide a status."]
     },
-    donor: {
-        type: ObjectId,
-        ref: "User", 
-        required: true
+    donor_contact_no:{
+        type: Number,
+        required:[true, "Please provide a donor contact number."]
     },
 })
 

@@ -8,7 +8,7 @@ const user = new Schema({
     role:{
         type: String,
         enum: ["general", "blood-bank"],
-        required: true
+        required: [true, "Please provide a role for the user."]
     },
     password : {
         type: String,
@@ -18,27 +18,27 @@ const user = new Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: [true, "Please provide an email."],
         unique: true,
         validate: [validator.isEmail, 'Please provide a valid email.']
     },
     name: {
         type: String,
-        required: true
+        required: [true, "Please provide a name."]
     },
     contact_no: {
         type: Number,
-        required: true,
+        required: [true, "Please provide a contact no."],
         unique: true
     },
     secondary_contact_no: Number,
     address: {
         type: String,
-        required: true
+        required: [true, "Please provide an address."]
     },
     details_ref: {
         type: ObjectId,
-        required: true
+        required: [true, "Please provide reference to the detail of the user."]
     }
 })
 

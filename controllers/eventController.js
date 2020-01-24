@@ -2,13 +2,16 @@ const eventModel = require('../models/eventModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const generalUserDetailsModel = require('../models/generalUserDetailsModel');
+const userModel = require('../models/userModel');
 
 exports.addEvent = catchAsync(async(req, res, next)=>{
+    const organizer = await userModel.findById(req.user.id);
     newEvent = await eventModel.create({
         location : req.body.location,
-        time_stamp : `${req.body.date}T${req.body.time}.000+00:00`,
-        remarks: req.body.remarks,
-        organizer: req.user.id
+        time_stamp : `${req.body.date.substring(0,10)}T${req.body.time.substring(11,19)}.000+00:00`,
+        remarks: req.body.remarks? req.body.remarks:null,
+        organizer_name: organizer.name,
+        organizer: organizer._id
     });
     res.status(201).json({
         status: 'success',

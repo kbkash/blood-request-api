@@ -5,11 +5,11 @@ const ObjectId = Schema.ObjectId;
 const event = new Schema({
      location: {
           type: String,
-          required: true
+          required: [true, "Please provide the location."]
      },
      time_stamp: {
           type: Date,
-          required: true
+          required: [true, "Please provide date and time for the event."]
      },
      remarks: {
           type: String
@@ -18,10 +18,14 @@ const event = new Schema({
           type: ObjectId,
           ref: "User"
      }],
+     organizer_name:{
+          type: String,
+          required: true
+     },
      organizer: {
           type: ObjectId,
           ref: "User",
-          required:true
+          required:[true, "Please provide the organizer."]
      },
 })
 

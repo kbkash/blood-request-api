@@ -23,7 +23,15 @@ exports.trackNewBlood = catchAsync(async(req,res,next) => {
 })
 
 exports.getBloodStatus = catchAsync(async (req,res,next)=>{
-    const bloodStatus = await bloodStatusModel.find({donor : req.user.id});
+    const bloodStatus = await bloodStatusModel.find({donor : req.user.id})
+    .populate("blood_bank")
+    .exec(function(err, users) {
+        if(err) {
+            res.json(err);
+        } else {
+            res.json(users)
+        }
+    });
     if(!bloodStatus){
         return next(new AppError("Blood not found!", 404)); //404 status code for not found
     }
@@ -36,22 +44,23 @@ exports.getBloodStatus = catchAsync(async (req,res,next)=>{
 })
 
 exports.updateBloodStatus = catchAsync(async (req,res,next)=>{
-    const donor = await userModel.findOne({date: req.body.date,contact_no: req.body.contact_no});
-    if(!donor){
-        return next(new AppError("The donor doesn't exist.", 404));
-    }
-    const bloodStatus = await bloodStatusModel.findOneAndUpdate({donor: donor._id},{status: req.body.status},{
-        new: true
-    });
-    if(!bloodStatus){
-        return next(new AppError("Blood not found!", 404))
-    }
-    res.status(200).json({
-        status: 'success',
-        data:{
-            bloodStatus: bloodStatus
-        }
-    })
+    // const donor = await userModel.findOne({date: req.body.eventDate, contact_no: req.body.contact_no});
+    // if(!donor){
+    //     return next(new AppError("The donor doesn't exist.", 404));
+    // }
+    // const bloodStatus = await bloodStatusModel.findOneAndUpdate({donor: donor._id},{status: req.body.status},{
+    //     new: true
+    // });
+    // if(!bloodStatus){
+    //     return next(new AppError("Blood not found!", 404))
+    // }
+    // res.status(200).json({
+    //     status: 'success',
+    //     data:{
+    //         bloodStatus: bloodStatus
+    //     }
+    // })
+    res.json("ok")
 })
 
 exports.getAllTrackedBloods = catchAsync(async(req,res,next)=>{

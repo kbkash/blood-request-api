@@ -10,7 +10,7 @@ exports.postRequest = catchAsync(async(req,res,next)=>{
         patient_name: req.body.patient_name,
         hospital: req.body.hospital,
         blood_group: req.body.blood_group,
-        time_stamp : `${req.body.date}T${req.body.time}.000+00:00`,
+        time_stamp : `${req.body.date.substring(0,10)}T${req.body.time.substring(11,19)}.000+00:00`,
         amount_of_blood: req.body.amount_of_blood,
         contact_no: req.body.contact_no,
         case_of_treatment: req.body.case_of_treatment,

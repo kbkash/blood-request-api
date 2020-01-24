@@ -28,7 +28,8 @@ exports.registerUser = catchAsync(async (req, res, next) => {
             token,
             data: {
                 user: newUser,
-                details: newUserDetails
+                details: newUserDetails,
+                role: newUser.role
             }
         })
     }catch(ex){
@@ -38,10 +39,17 @@ exports.registerUser = catchAsync(async (req, res, next) => {
 })
 
 exports.updateUser = catchAsync(async(req,res,next)=>{
-    const updatedUser = await userModel.findByIdAndUpdate(req.user.id, req.body.user, {
-        new: true,
-        runValidators: true
-    })
+    if(req.body.user.password){
+        const updatedUser = await userModel.findByIdAndUpdate(req.user.id, req.body.user, {
+            new: true,
+            runValidators: true
+        })
+    }else{
+        const updatedUser = await userModel.findByIdAndUpdate(req.user.id, req.body.user, {
+            new: true,
+            runValidators: true
+        })
+    }
     var updatedDetails = undefined;
     if(updatedUser.role == "general"){
         updatedDetails = await generalUserDetailsModel.findByIdAndUpdate(req.user.details_ref, req.body.details, {
@@ -92,6 +100,17 @@ exports.getBloodBanks = catchAsync(async(req,res,next)=>{
         status: "success",
         data: {
             bloodBanks: bloodBanks
+        }
+    })
+})
+
+//Sends all the necessary credentials for a specific user as a response
+exports.getUser = catchAsync(async(req,res,next)=>{
+    const user = req.user
+    res.status(200).json({
+        status: "success",
+        data: {
+            user: user,
         }
     })
 })
